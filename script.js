@@ -31,26 +31,34 @@
 
 
 const gamePlay = (() => {
+        let canPlace = true;
+        function isOccupied(input) {
+            if (setup.gameBoard[input].playerInfo === null)
+                {return;
+                } else if (setup.gameBoard[input].playerInfo != null) {
+                    console.error("that square is taken!")
+                    return canPlace = false;
+                }}
     const placeOnBoard = (square, player) => {
+        isOccupied(square);
+        if (canPlace === true) {
         setup.gameBoard[square].playerInfo = player;
-    const checkWin = () => {
-        //need some way to see if player is in square: use gameBoard.playerInfo = {object}, then access what that object is
-        //maybe can use whoPlayed (who just played a piece) to check, bc you only need to see if the piece you just played will result in a win or not
-        //if ROW add up to 15 {}
-        //if COLUMN add up to 15 {}
-        //if DIAGONAL add up to 15 {}
-    }
+    } else if (canPlace === false) {
+        canPlace = true;
+        let differentSquare = prompt("choose a different square");
+        placeOnBoard(differentSquare, player);
     };
-
+}
 return {placeOnBoard};
 })();
 
-gamePlay.placeOnBoard(1, setup.player1);
-gamePlay.placeOnBoard(3, setup.player2);
+//gamePlay.placeOnBoard(1, setup.player1);
+//gamePlay.placeOnBoard(3, setup.player2);
 console.log(setup.gameBoard);
-console.log(setup.gameBoard[3].playerInfo.playerIcon); //<-- maybe add function so that we can access playerIcons easily without needing this ridiculous string of object properties
+//console.log(setup.gameBoard[3].playerInfo.playerIcon); //<-- maybe add function so that we can access playerIcons easily without needing this ridiculous string of object properties
 
 const gameFlow = (() => {
-
+    gamePlay.placeOnBoard(prompt("where would you like to place?"), setup.player1);
+    gamePlay.placeOnBoard(prompt("where would you like to place?"), setup.player2);
 })();
 
