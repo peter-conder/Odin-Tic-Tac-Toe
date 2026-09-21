@@ -1,5 +1,7 @@
+//const { createElement } = require("react");
+
     const setup = (() => {
-        const gameBoard = [
+        /**const gameBoard = [
         {"playerInfo": null, "boardID": 0},
         {"playerInfo": null, "boardID": 1},
         {"playerInfo": null, "boardID": 2},
@@ -8,8 +10,40 @@
         {"playerInfo": null, "boardID": 5},
         {"playerInfo": null, "boardID": 6},
         {"playerInfo": null, "boardID": 7},
-        {"playerInfo": null, "boardID": 8},];
-        
+        {"playerInfo": null, "boardID": 8},];**/
+        const gameBoard = (() => {
+        const boardArray = [];
+            function addGameBoard(boardIdent) {
+                let newSquare = {
+                    "playerInfo": "",
+                    "boardID": boardIdent}
+                boardArray.push(newSquare);
+                let newDiv =  document.createElement("div");
+                let newContent = document.createTextNode(`${newSquare.playerInfo}`);
+                newDiv.classList.add("gameBox");
+                newDiv.appendChild(newContent);
+                divContainer.appendChild(newDiv);
+            }
+            let looper = 0;
+            for (i = 0; i < 9; i++) {
+                addGameBoard(looper);
+                looper++;
+            }
+            return boardArray;
+        })();
+        /**
+         * How to make the DOM elements?
+             * add those divs with js directly:
+                 * let gameBoard array
+                 * for until 9:
+                 * function add div:
+                     * create object (class?)
+                   * create element in DOM with name [s]
+                   * let element.textContent = object.playerInfo
+                   * push element to gameBoard
+         */
+
+
         function createPlayer(name, icon) {
             let playerName = name;
             let playerIcon = icon;
@@ -24,7 +58,7 @@
         // 3 | 4 | 5
         // 6 | 7 | 8
 
-        function makeWinArray() {
+        /**function makeWinArray() {
             //makes the mini-arrays that will check if a player has won or not
             let arr1 = (() => {
                 let array = [];
@@ -90,12 +124,14 @@
                 return array;
                     })();
             let winArray1 = [arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8];
-            return winArray1;
-        }
+            return winArray1;**/
+        
 
-        const winArray = makeWinArray(gameBoard);
+        //const winArray = makeWinArray(gameBoard);
 
-        return {gameBoard, player1, player2, winArray};
+        return {player1, player2, gameBoard
+            //winArray
+        };
         })();
 
 const gamePlay = (() => {
@@ -120,7 +156,7 @@ const placeOnBoard = (square, player) => {
     };
 }
 
-const isWin = (player) => {
+/**const isWin = (player) => {
     let s = 0;
     for (let t = 0; t < 8; t++) {
     let subArray = setup.winArray[s];
@@ -133,30 +169,23 @@ const isWin = (player) => {
     }
     s++;
    };
-};
-return {placeOnBoard, isWin};
+};**/
+
+const gameTurn = (square, player) => {
+    placeOnBoard(square, player);
+    //isWin(player);
+}
+return {gameTurn};
 })();
 
-//console.log(setup.gameBoard[3].playerInfo.playerIcon); //<-- maybe add function so that we can access playerIcons easily without needing this ridiculous string of object properties
 
 
 const gameFlow = (() => {
-    
-    gamePlay.placeOnBoard(0, setup.player1);
-    gamePlay.placeOnBoard(1, setup.player1);
-    gamePlay.placeOnBoard(2, setup.player1);
-    gamePlay.isWin(setup.player1)
-    console.log(setup.gameBoard); 
-    
+    console.log(setup.gameBoard);
 })();
 
-//can now place icons in array.
-//what now? need a way to check win condition.
-//easiest way to implement this is to make a gamePlay.isWin object that can play after turn 5 in the gameFlow object.
 
-/** isWin
- * check the contents of specific sub-arrays
- * sub-arrays: 1,2,3 || 4,5,6 || 6,7,8 || 1,4,7 || 2,5,8 || 3,6,9 || 1,5,9 || 3,5,7
- 
- * loop through each of these sub-arrays, if any of these sub-arrays have the same player object in all of them, then that player wins
+/**
+ * Fix isWin
+ * link the gameBoard to the DOM
  */

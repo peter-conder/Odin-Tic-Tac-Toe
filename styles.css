@@ -16,6 +16,7 @@ body {
     display: grid;
         gap: 1px;
         grid-template-columns: repeat(3, 1fr);
+        
     height: 30vw;
     width: 30vw;
 }
@@ -24,9 +25,13 @@ body {
     background-color: lightgray;
     width: 90%;
     height: 90%;
+        max-width: 95%;
+        max-height: 95%;
     justify-self: center;
     align-self: center;
     border-radius: 25px;
+    font-size: 6vw;
+    justify-content: center;
 }
 
 .gameBox > .gameBox {
@@ -36,5 +41,10 @@ body {
 
 .gameBox:hover {
     background-color: lightslategray;
-    transition: background-color .2s;
+    width: 92%;
+    height: 95%;
+    transition:
+        background-color .2s,
+        width .2s;
+    
 }
