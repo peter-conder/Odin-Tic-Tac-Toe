@@ -1,7 +1,6 @@
-//const { createElement } = require("react");
     
     const setup = (() => {
-        /**const gameBoard = [
+        const gameBoard = [
         {"playerInfo": null, "boardID": 0},
         {"playerInfo": null, "boardID": 1},
         {"playerInfo": null, "boardID": 2},
@@ -10,82 +9,23 @@
         {"playerInfo": null, "boardID": 5},
         {"playerInfo": null, "boardID": 6},
         {"playerInfo": null, "boardID": 7},
-        {"playerInfo": null, "boardID": 8},];**/
-        const gameBoard = (() => {
-
-
-        const boardArray = [];
+        {"playerInfo": null, "boardID": 8},];
         
-            function addGameBoard(boardIdent) {
-                let newSquare = {
-                    "playerInfo": "",
-                    "boardID": boardIdent}
-                boardArray.push(newSquare);
-                let newDiv =  document.createElement("div");
-                this.boardID = boardIdent;
-                newDiv.boardID = boardIdent;
-                let newContent = document.createTextNode(`${newSquare.playerInfo}`);
-                newDiv.classList.add("gameBox");
-                newDiv.appendChild(newContent);
-                divContainer.appendChild(newDiv);
-                newDiv.addEventListener(
-                    "click", ()=> {
-            this.boardID=boardIdent;
-            return console.log`${(this.boardID)}`;});
-            }
-
-            let looper = 0;
-            for (i = 0; i < 9; i++) {
-                addGameBoard(looper);
-                looper++;
-            }
-            return boardArray;
-        })();
-        /**
-         * how to have placeOnBoard
-         * 
-         * **/
-
         function createPlayer(name, icon) {
-            let playerName = name;
-            let playerIcon = icon;
-                //maybe add a different parameter for wins later
-            return {playerName, playerIcon}; //<returns the player object
+        let playerName = name;
+        let playerIcon = icon;
+        //maybe add a different parameter for wins later
+        return {playerName, playerIcon}; //<returns the player object
         };
 
         const player1 = createPlayer('player1', 'x');
         const player2 = createPlayer('player2', 'o');
+        //creates players
 
-        // 0 | 1 | 2
-        // 3 | 4 | 5
-        // 6 | 7 | 8
-
-        /**function makeWinArray() {
-            //makes the mini-arrays that will check if a player has won or not
-            let arr1 = (() => {
-                let array = [];
-                array.push(gameBoard[0]);
-                array.push(gameBoard[1]);
-                array.push(gameBoard[2]);
-                return array;
-                    })();
-
-            let arr2 = (() => {
-                let array = [];
-                array.push(gameBoard[3]);
-                array.push(gameBoard[4]);
-                array.push(gameBoard[5]);
-                return array;
-                    })();
-
-            let arr3 = (() => {
-                let array = [];
-                array.push(gameBoard[6]);
-                array.push(gameBoard[7]);
-                array.push(gameBoard[8]);
-                return array;
-                     })();
-
+        function makeWinArray(parentArray) {
+            let arr1 = parentArray.slice(0,3);
+            let arr2 = parentArray.slice(3,6);
+            let arr3 = parentArray.slice(6);
             let arr4 = (() => {
                 let array = [];
                 array.push(gameBoard[0]);
@@ -126,19 +66,17 @@
                 return array;
                     })();
             let winArray1 = [arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8];
-            return winArray1;**/
-        
+            return winArray1;
+        }
 
-        //const winArray = makeWinArray(gameBoard);
+        const winArray = makeWinArray(gameBoard);
 
-        return {player1, player2, gameBoard
-            //winArray
-        };
+        return {gameBoard, player1, player2, winArray};
         })();
+
 
 const gamePlay = (() => {
         let canPlace = true;
-        let continuePlay = true;
         function isOccupied(input) {
             if (setup.gameBoard[input].playerInfo === null)
                 {return;
@@ -146,54 +84,61 @@ const gamePlay = (() => {
                     console.error("that square is taken!")
                     return canPlace = false;
                 }}
-
-const placeOnBoard = (square, player) => {
+    const placeOnBoard = (square, player) => {
         isOccupied(square);
         if (canPlace === true) {
-        setup.gameBoard[square].playerInfo = player.playerIcon;
+        setup.gameBoard[square].playerInfo = player;
     } else if (canPlace === false) {
         canPlace = true;
-        let differentSquare = alert("choose a different square");
-        placeOnBoard(square,player);
+        let differentSquare = prompt("choose a different square");
+        placeOnBoard(differentSquare, player);
     };
 }
-//add a local function so u can know what square you're placing on
 
-
-
-/**const isWin = (player) => {
+const isWin = () => {
     let s = 0;
     for (let t = 0; t < 8; t++) {
     let subArray = setup.winArray[s];
-    let isEqual = arr => arr.every(item => item.playerInfo === arr[0].playerInfo);
+    let isEqual = arr => arr.every(item => item === arr[0]);
     if (isEqual(subArray) === true) {
-        console.log(`somebody won, triggered at${JSON.stringify(subArray)}`);
-        return console.log(`${JSON.stringify(player.playerName)} won!`);
+        console.log('somebody won');
     }  else {
         console.log("nobody won");
     }
     s++;
    };
-};**/
-
-const gameTurn = (square, player) => {
-    placeOnBoard(square, player);
-    //isWin(player);
-}
-return {gameTurn};
+};
+return {placeOnBoard, isWin};
 })();
 
-
+//console.log(setup.gameBoard[3].playerInfo.playerIcon); //<-- maybe add function so that we can access playerIcons easily without needing this ridiculous string of object properties
 
 const gameFlow = (() => {
+    gamePlay.placeOnBoard(prompt("player1"), setup.player1);
+    gamePlay.placeOnBoard(prompt("player1"), setup.player1);
+    gamePlay.placeOnBoard(prompt("player1"), setup.player1);
+    gamePlay.isWin();
     console.log(setup.gameBoard);
 })();
 
-/**
- * Fix isWin
- * how to actually interact with the DOM?
-     * can't call functions from within setup because nothing else is called yet.
-     * maybe in gamePlay make a loop that loops through the DOM under divContainer, adding eventListeners to each gameBox div that are linked to a function that triggers placeOnBoard and change playerInfo to setup.player.playerIcon.
-     * then for isWin I make a bunch of winArrays, very similar to before, and then loop through them, making sure to loop through each winArray after every time you place a piece and checking that the contents of each winArray are all equal to eachother and not blank. if they are all equal, then trigger win (confetti, maybe something with all the squares of the DOM).
-     * when every square is filled, and if winArray returns false, then trigger catsGame, which spawns in a picture of a cat over the whole screen. 
+
+
+//sets playerInfo to 0-8 on each array square
+//I made this little loop to practice loops I guess. I could have done this manually but no
+
+//-------------------------------------
+//setPlayerInfo(setup.gameBoard);
+//console.log(setup.gameBoard);
+//console.log(setup.winArray[0][1]);
+//-------------------------------------
+
+//can now place icons in array.
+//what now? need a way to check win condition.
+//easiest way to implement this is to make a gamePlay.isWin object that can play after turn 5 in the gameFlow object.
+
+/** isWin
+ * check the contents of specific sub-arrays
+ * sub-arrays: 1,2,3 || 4,5,6 || 7,8,9 || 1,4,7 || 2,5,8 || 3,6,9 || 1,5,9 || 3,5,7
+ 
+ * loop through each of these sub-arrays, if any of these sub-arrays have the same player object in all of them, then that player wins
  */
