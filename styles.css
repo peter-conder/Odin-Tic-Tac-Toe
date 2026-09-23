@@ -16,7 +16,7 @@ body {
     display: grid;
         gap: 1px;
         grid-template-columns: repeat(3, 1fr);
-        
+
     height: 30vw;
     width: 30vw;
 }
@@ -40,11 +40,12 @@ body {
 }
 
 .gameBox:hover {
-    background-color: lightslategray;
-    width: 92%;
+    background-color: #bfbfbf;
+    width: 95%;
     height: 95%;
     transition:
-        background-color .2s,
-        width .2s;
+        background-color .4s,
+        width .4s,
+        height .4s;
     
 }

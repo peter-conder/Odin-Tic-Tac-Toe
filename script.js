@@ -1,5 +1,5 @@
 //const { createElement } = require("react");
-
+    
     const setup = (() => {
         /**const gameBoard = [
         {"playerInfo": null, "boardID": 0},
@@ -12,18 +12,28 @@
         {"playerInfo": null, "boardID": 7},
         {"playerInfo": null, "boardID": 8},];**/
         const gameBoard = (() => {
+
+
         const boardArray = [];
+        
             function addGameBoard(boardIdent) {
                 let newSquare = {
                     "playerInfo": "",
                     "boardID": boardIdent}
                 boardArray.push(newSquare);
                 let newDiv =  document.createElement("div");
+                this.boardID = boardIdent;
+                newDiv.boardID = boardIdent;
                 let newContent = document.createTextNode(`${newSquare.playerInfo}`);
                 newDiv.classList.add("gameBox");
                 newDiv.appendChild(newContent);
                 divContainer.appendChild(newDiv);
+                newDiv.addEventListener(
+                    "click", ()=> {
+            this.boardID=boardIdent;
+            return console.log`${(this.boardID)}`;});
             }
+
             let looper = 0;
             for (i = 0; i < 9; i++) {
                 addGameBoard(looper);
@@ -32,17 +42,9 @@
             return boardArray;
         })();
         /**
-         * How to make the DOM elements?
-             * add those divs with js directly:
-                 * let gameBoard array
-                 * for until 9:
-                 * function add div:
-                     * create object (class?)
-                   * create element in DOM with name [s]
-                   * let element.textContent = object.playerInfo
-                   * push element to gameBoard
-         */
-
+         * how to have placeOnBoard
+         * 
+         * **/
 
         function createPlayer(name, icon) {
             let playerName = name;
@@ -148,13 +150,16 @@ const gamePlay = (() => {
 const placeOnBoard = (square, player) => {
         isOccupied(square);
         if (canPlace === true) {
-        setup.gameBoard[square].playerInfo = player;
+        setup.gameBoard[square].playerInfo = player.playerIcon;
     } else if (canPlace === false) {
         canPlace = true;
-        let differentSquare = prompt("choose a different square");
-        placeOnBoard(differentSquare, player);
+        let differentSquare = alert("choose a different square");
+        placeOnBoard(square,player);
     };
 }
+//add a local function so u can know what square you're placing on
+
+
 
 /**const isWin = (player) => {
     let s = 0;
@@ -184,8 +189,11 @@ const gameFlow = (() => {
     console.log(setup.gameBoard);
 })();
 
-
 /**
  * Fix isWin
- * link the gameBoard to the DOM
+ * how to actually interact with the DOM?
+     * can't call functions from within setup because nothing else is called yet.
+     * maybe in gamePlay make a loop that loops through the DOM under divContainer, adding eventListeners to each gameBox div that are linked to a function that triggers placeOnBoard and change playerInfo to setup.player.playerIcon.
+     * then for isWin I make a bunch of winArrays, very similar to before, and then loop through them, making sure to loop through each winArray after every time you place a piece and checking that the contents of each winArray are all equal to eachother and not blank. if they are all equal, then trigger win (confetti, maybe something with all the squares of the DOM).
+     * when every square is filled, and if winArray returns false, then trigger catsGame, which spawns in a picture of a cat over the whole screen. 
  */
